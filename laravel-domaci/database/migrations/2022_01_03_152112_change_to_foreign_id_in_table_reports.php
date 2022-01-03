@@ -16,6 +16,7 @@ class ChangeToForeignIdInTableReports extends Migration
         Schema::table('reports', function (Blueprint $table) {
             $table->foreignId('patientId')->change();
             $table->foreignId('doctorId')->change(); 
+            $table->foreignId('patientStatus')->change(); 
         });
     }
 
@@ -27,8 +28,9 @@ class ChangeToForeignIdInTableReports extends Migration
     public function down()
     {
         Schema::table('reports', function (Blueprint $table) {
-            $table->integer('patientId');
-            $table->integer('doctorId'); 
+            $table->integer('patientId')->change();
+            $table->integer('doctorId')->change(); 
+            $table->integer('patientStatus')->change(); 
         });
     }
 }
