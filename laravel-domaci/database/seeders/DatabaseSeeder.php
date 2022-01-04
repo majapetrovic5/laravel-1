@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
         $report1 = Report::create([
             'patientId'=>"1",
             'doctorId'=>"1",
-            'date-time'=>now(),
+            'datetime'=>now(),
              'report'=>"General: denies fatigue, malaise, fever, weight loss
              Eyes: denies blurring, diplopia, irritation, discharge
              Ear/Nose/Throat: denies ear pain or discharge, nasal obstruction or discharge, sore throat
@@ -69,7 +69,7 @@ class DatabaseSeeder extends Seeder
         $report1 = Report::create([
             'patientId'=>"2",
             'doctorId'=>"2",
-            'date-time'=>now(),
+            'datetime'=>now(),
             'report'=>"Mr Tans dementia and stroke have impaired the functioning of his mind and brain.
             His failure to remember where he was (i.e. in the hospital) and the day and date,
             despite being told a short while ago, shows his inability to retain information. He was
