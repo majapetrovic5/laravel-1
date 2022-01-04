@@ -8,6 +8,8 @@ use \App\Models\PatientStatus;
 use \App\Models\Report;
 use App\Http\Resources\PatientCollection;
 use App\Http\Resources\PatientResource;
+use Illuminate\Support\Facades\Validator;
+
 
 
 class PatientController extends Controller
@@ -40,7 +42,28 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+
+            'name' => 'required|string|max:20',
+            'email' => 'required|string|max:100|email|unique:patients',
+            'age' => 'required|numeric|gte:0|lte:99',
+            'phoneNumber' => 'required|max:20|unique:patients',
+        
+        ]);
+
+        if ($validator->fails())
+
+            return response()->json($validator->errors());
+        
+            $patient = Patient::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'age' => $request->age,
+                'phoneNumber' => $request->phoneNumber,
+            ]);
+      
+        $patient->save();
+        return response()->json(['Patient is created successfully.', new PatientResource($patient)]);
     }
 
     /**
@@ -73,11 +96,32 @@ class PatientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+    public function update(Request $request, Patient $patient)
 
+    {
+        $validator = Validator::make($request->all(), [
+
+            'name' => 'required|string|max:20',
+            'email' => 'required|string|max:100|email|unique:patients,email,'.$patient->id,
+            'age' => 'required|numeric|gte:0|lte:99',
+            'phoneNumber' => 'required|max:20|unique:patients,phoneNumber,'.$patient->id,
+            
+        ]);
+
+        if ($validator->fails())
+
+            return response()->json($validator->errors());
+        
+        //$patient->id= $request->id;
+        $patient->name = $request->name;
+        $patient->email = $request->email;
+        $patient->age = $request->age;
+        $patient->phoneNumber = $request->phoneNumber;
+      
+        $patient->save();
+        return response()->json(['Patient is updated successfully.', new PatientResource($patient)]);
+
+    }
     /**
      * Remove the specified resource from storage.
      *

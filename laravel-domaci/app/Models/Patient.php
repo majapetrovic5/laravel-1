@@ -11,6 +11,15 @@ class Patient extends Model
     use HasFactory;
     protected $table='patients';
     public $primaryKey='id';
+   
+    protected $fillable = [
+        'name',
+        'email',
+        'age',
+        'phoneNumber',
+    ];
+
+
 
     public function report(){
         return $this->hasMany(Report::class);
