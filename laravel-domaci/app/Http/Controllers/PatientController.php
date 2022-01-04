@@ -104,7 +104,7 @@ class PatientController extends Controller
             'name' => 'required|string|max:20',
             'email' => 'required|string|max:100|email|unique:patients,email,'.$patient->id,
             'age' => 'required|numeric|gte:0|lte:99',
-            'phoneNumber' => 'required|max:20|unique:patients,phoneNumber,'.$patient->id,
+            'phoneNumber' => 'required|string|max:20|unique:patients,phoneNumber,'.$patient->id,
             
         ]);
 
