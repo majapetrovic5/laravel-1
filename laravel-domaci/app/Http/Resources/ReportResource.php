@@ -4,6 +4,10 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+use App\Http\Resources\PatientResource;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\PatientStatusResource;
+
 class ReportResource extends JsonResource
 {
     /**
@@ -16,11 +20,11 @@ class ReportResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'patientId' => $this->resource->patientId,
-            'doctorId' => $this->resource->doctorId,
+            'patient' => new PatientResource($this->resource->patient),
+            'doctor' => new UserResource($this->resource->doctor),
             'datetime' => $this->resource->datetime,
             'report' => $this->resource->report,
-            'patientStatus' => $this->resource->patientStatus,
+            'patientStatus' => new PatientStatusResource($this->resource->patientstatus),
 
         ];
     }

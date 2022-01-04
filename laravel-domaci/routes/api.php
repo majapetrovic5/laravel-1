@@ -6,6 +6,9 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientStatusController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserReportController;
+use App\Http\Controllers\PatientReportController;
+use App\Http\Controllers\StatusReportsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,4 +27,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::resource('patients',PatientController::class);
 Route::resource('patientstatus',PatientStatusController::class)->only(['index','show']);
 Route::resource('reports',ReportController::class);
-Route::resource('users',UserController::class)->only(['index','show']);
+Route::resource('doctors',UserController::class)->only(['index','show']);
+
+Route::get('/doctors/{id}/reports', [UserReportController::class, 'index']);
+Route::get('/patients/{id}/reports', [PatientReportController::class, 'index']);
+Route::get('/status/{id}/reports', [StatusReportsController::class, 'index']);
