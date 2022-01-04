@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientStatusController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,5 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
  
 Route::resource('patients',PatientController::class);
-Route::resource('patientstatus',PatientStatusController::class);
+Route::resource('patientstatus',PatientStatusController::class)->only(['index','show']);
 Route::resource('reports',ReportController::class);
+Route::resource('users',UserController::class)->only(['index','show']);
