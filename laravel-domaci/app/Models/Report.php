@@ -12,6 +12,14 @@ class Report extends Model
 {
     protected $table = 'reports';
     public $primaryKey='id';
+
+    protected $fillable = [
+        'patientId',
+        'doctorId',
+        'datetime',
+        'report',
+        'patientStatus',
+    ];
  
     public function patient(){
         return $this->belongsTo(Patient::class, 'patientId');
