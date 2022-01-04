@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use \App\Models\Patient;
+use \App\Models\PatientStatus;
+use \App\Models\Report;
+use App\Http\Resources\PatientStatusCollection;
+use App\Http\Resources\PatientStatusResource;
+
 class PatientStatusController extends Controller
 {
     /**
@@ -13,7 +19,7 @@ class PatientStatusController extends Controller
      */
     public function index()
     {
-        //
+        return new PatientStatusCollection(PatientStatus::all());
     }
 
     /**
@@ -40,12 +46,12 @@ class PatientStatusController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\PatientStatus $patientstatus
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(PatientStatus $patientstatus)
     {
-        //
+        return new PatientStatusResource($patientstatus);
     }
 
     /**

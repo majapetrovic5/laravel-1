@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use \App\Models\Patient;
+use \App\Models\PatientStatus;
+use \App\Models\Report;
+use App\Http\Resources\ReportCollection;
+use App\Http\Resources\ReportResource;
+
 class ReportController extends Controller
 {
     /**
@@ -13,7 +19,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        //
+        return new ReportCollection(Report::all());
     }
 
     /**
@@ -40,12 +46,12 @@ class ReportController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Report $report
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Report $report)
     {
-        //
+        return new ReportResource($report);
     }
 
     /**
