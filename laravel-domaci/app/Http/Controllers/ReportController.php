@@ -41,10 +41,12 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
+        if(Auth()->user()->isUser()) {
+
         $validator = Validator::make($request->all(), [
 
             'patientId' => 'required|numeric|digits_between:1,5',
-            'doctorId' => 'required|numeric|digits_between:1,5',
+           // 'doctorId' => 'required|numeric|digits_between:1,5',
             'datetime' => 'required|string|date',
             'report' => 'required|min:20',
             'patientStatus' => 'required|digits:1|numeric|gte:1|lte:5',
@@ -57,7 +59,7 @@ class ReportController extends Controller
         
             $report = Report::create([
                 'patientId' => $request->patientId,
-                'doctorId' => $request->doctorId,
+                'doctorId' => Auth()->user()->id,
                 'datetime' => $request->datetime,
                 'report' => $request->report,
                 'patientStatus' => $request->patientStatus,
@@ -65,7 +67,10 @@ class ReportController extends Controller
       
         $report->save();
         return response()->json(['Report is created successfully.', new ReportResource($report)]);
-    }
+    } 
+    else return response()->json('Unauthorized to create reports.');
+
+}
 
     /**
      * Display the specified resource.
@@ -98,10 +103,14 @@ class ReportController extends Controller
      */
     public function update(Request $request, Report $report)
     {
-        $validator = Validator::make($request->all(), [
+        if(Auth()->user()->isUser()) {
+
+            if(Auth()->user()->id == $report->doctorId){
+       
+                $validator = Validator::make($request->all(), [
 
             'patientId' => 'required|numeric|digits_between:1,5',
-            'doctorId' => 'required|numeric|digits_between:1,5',
+            //'doctorId' => 'required|numeric|digits_between:1,5',
             'datetime' => 'required|string|date',
             'report' => 'required|min:20',
             'patientStatus' => 'required|digits:1|numeric|gte:1|lte:5',
@@ -114,7 +123,7 @@ class ReportController extends Controller
         
         //$patient->id= $request->id;
         $report->patientId = $request->patientId;
-        $report->doctorId = $request->doctorId;
+        $report->doctorId = Auth()->user()->id;
         $report->datetime = $request->datetime;
         $report->report = $request->report;
         $report->patientStatus = $request->patientStatus;
@@ -122,6 +131,10 @@ class ReportController extends Controller
         $report->save();
         return response()->json(['Report is updated successfully.', new ReportResource($report)]);
     }
+    else return response()->json('Unauthorized to update someone elses reports.');
+} 
+    else return response()->json('Unauthorized to update reports.');
+}
 
     /**
      * Remove the specified resource from storage.
@@ -130,8 +143,33 @@ class ReportController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Report $report)
-    {
-        $report->delete();
-        return response()->json('Report is deleted successfully.');
+    { 
+
+        if(Auth()->user()->isUser()) {
+            if(Auth()->user()->id == $report->doctorId){
+            $report->delete();
+        return response()->json('Report is deleted successfully.'); }
+        else response()->json('Unauthorized to delete someone elses reports.');
+
+            }
+            else response()->json('Unauthorized to delete reports.');
+    }
+
+
+    public function showmyreports()
+    { 
+        if(Auth()->user()->isUser()) {
+       
+            $reports = Report::get()->where('doctorId', Auth()->user()->id);
+
+            if (count($reports) ==0 )
+    
+                return response()->json('Data not found', 404);
+                
+    
+            return new ReportCollection($reports);
+
+
+        } else return response()->json('You are not allowed to have reports.');
     }
 }
