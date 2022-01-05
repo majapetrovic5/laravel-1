@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use \App\Models\Report;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -22,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -46,4 +48,13 @@ class User extends Authenticatable
     public function report(){
         return $this->hasMany(Report::class);
     }
+    
+    public function isAdmin(){
+        return $this->role === 'Admin';
+    }
+
+    public function isUser(){
+        return $this->role === 'Doctor';
+    }
+
 }

@@ -7,6 +7,8 @@ use \App\Models\User;
 use \App\Models\Patient;
 use \App\Models\PatientStatus;
 use \App\Models\Report;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,7 +23,19 @@ class DatabaseSeeder extends Seeder
          PatientStatus::truncate();
          User::truncate();
 
+         $user1 = User::create([
+            'name'=>"Marko Petrovic",
+            'email'=>"petrovicmarko@gmail.com",
+            'password' => Hash::make('marko.petrovic123'),
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'Admin',
+
+        ]);
+
          User::factory(5)->create();
+
+        
          Patient::factory(7)->create();
     
          $status1 = PatientStatus::create([
