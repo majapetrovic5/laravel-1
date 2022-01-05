@@ -42,6 +42,7 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
+        if(Auth()->user()->isUser()) {
         $validator = Validator::make($request->all(), [
 
             'name' => 'required|string|max:20',
@@ -63,7 +64,9 @@ class PatientController extends Controller
             ]);
       
         $patient->save();
-        return response()->json(['Patient is created successfully.', new PatientResource($patient)]);
+        return response()->json(['Patient is created successfully.', new PatientResource($patient)]); }
+
+        else return response()->json('Unauthorized to create patients.');
     }
 
     /**
@@ -98,7 +101,8 @@ class PatientController extends Controller
      */
     public function update(Request $request, Patient $patient)
 
-    {
+    {  
+        if(Auth()->user()->isAdmin()) {
         $validator = Validator::make($request->all(), [
 
             'name' => 'required|string|max:20',
@@ -120,7 +124,7 @@ class PatientController extends Controller
       
         $patient->save();
         return response()->json(['Patient is updated successfully.', new PatientResource($patient)]);
-
+    } else return response()->json('Unauthorized to update patients.');
     }
     /**
      * Remove the specified resource from storage.
@@ -130,8 +134,10 @@ class PatientController extends Controller
      */
     public function destroy(Patient $patient)
     {
+        if(Auth()->user()->isAdmin()) {
         $patient->delete();
-        return response()->json('Patient is deleted successfully.');
+        return response()->json('Patient is deleted successfully.'); }
+        else return response()->json('Unauthorized to delete patients.');
     
     }
 }
