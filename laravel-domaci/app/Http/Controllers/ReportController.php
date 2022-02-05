@@ -45,7 +45,7 @@ class ReportController extends Controller
 
         $validator = Validator::make($request->all(), [
 
-            'patientId' => 'required|numeric|digits_between:1,5',
+            'patientId' => 'required|numeric|gte:1|lte:7',
            // 'doctorId' => 'required|numeric|digits_between:1,5',
             'datetime' => 'required|string|date',
             'report' => 'required|min:20',
@@ -109,7 +109,7 @@ class ReportController extends Controller
        
                 $validator = Validator::make($request->all(), [
 
-            'patientId' => 'required|numeric|digits_between:1,7',
+            'patientId' => 'required|numeric|gte:1|lte:5',
             //'doctorId' => 'required|numeric|digits_between:1,5',
             'datetime' => 'required|string|date',
             'report' => 'required|min:20',
