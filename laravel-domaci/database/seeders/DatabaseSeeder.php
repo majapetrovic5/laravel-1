@@ -62,7 +62,7 @@ class DatabaseSeeder extends Seeder
         
         $report1 = Report::create([
             'patientId'=>"1",
-            'doctorId'=>"1",
+            'doctorId'=>"2",
             'datetime'=>now(),
              'report'=>"General: denies fatigue, malaise, fever, weight loss
              Eyes: denies blurring, diplopia, irritation, discharge

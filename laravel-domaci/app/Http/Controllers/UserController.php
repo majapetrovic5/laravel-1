@@ -72,7 +72,7 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  User  $doctor
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $doctor)
@@ -105,13 +105,17 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  User  $doctor
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $doctor)
     {
         if(Auth()->user()->isAdmin()){
         if($doctor->id != Auth()->user()->id){
+
+            $reports=Report::get()->where('doctorId',$doctor->id);
+            if(count($reports)>0) return response()->json('You cannot delete doctor who has reports!');
+
             $doctor->delete();
             return response()->json('Doctor is deleted successfully.');
         }

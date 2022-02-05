@@ -10,6 +10,7 @@ use App\Http\Controllers\UserReportController;
 use App\Http\Controllers\PatientReportController;
 use App\Http\Controllers\StatusReportsController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Resources\UserResource;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,7 +23,7 @@ use App\Http\Controllers\API\AuthController;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    return new UserResource($request->user());
 });
 
 Route::post('login', [AuthController::class, 'login']);

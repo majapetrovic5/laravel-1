@@ -96,7 +96,7 @@ class PatientController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Patient  $patient
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Patient $patient)
@@ -129,12 +129,15 @@ class PatientController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Patient  $patient
      * @return \Illuminate\Http\Response
      */
     public function destroy(Patient $patient)
     {
         if(Auth()->user()->isAdmin()) {
+
+            $reports=Report::get()->where('patientId',$patient->id);
+            if(count($reports)>0) return response()->json('You cannot delete patient who has reports!');
         $patient->delete();
         return response()->json('Patient is deleted successfully.'); }
         else return response()->json('Unauthorized to delete patients.');
